@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب التوافق باستخدام الجفر</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+        input {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>حساب التوافق باستخدام الجفر</h1>
+
+    <div>
+        <input type="text" id="userName" placeholder="اسمك">
+        <input type="text" id="userFatherName" placeholder="اسم والدك">
+        <input type="text" id="loverName" placeholder="اسم الحبيب">
+        <input type="text" id="loverFatherName" placeholder="اسم والد الحبيب">
+        <br>
+        <button onclick="calculate()">احسب التوافق</button>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        const letterValues = {
+            'أ': 1, 'ب': 2, 'ج': 3, 'د': 4, 'ه': 5, 'و': 6, 'ز': 7, 'ح': 8, 'ط': 9,
+            'ي': 10, 'ك': 20, 'ل': 30, 'م': 40, 'ن': 50, 'س': 60, 'ع': 70, 'ف': 80,
+            'ص': 90, 'ق': 100, 'ر': 200, 'ش': 300, 'ت': 400, 'ث': 500, 'خ': 600, 'ذ': 700,
+            'ض': 800, 'ظ': 900, 'غ': 1000
+        };
+
+        function getLetterValue(letter) {
+            return letterValues[letter] || 0;
+        }
+
+        function calculateNameValue(name) {
+            let total = 0;
+            for (let letter of name) {
+                total += getLetterValue(letter);
+            }
+            return total;
+        }
+
+        function calculate() {
+            const userName = document.getElementById('userName').value;
+            const userFatherName = document.getElementById('userFatherName').value;
+            const loverName = document.getElementById('loverName').value;
+            const loverFatherName = document.getElementById('loverFatherName').value;
+
+            if (!userName  !userFatherName  !loverName || !loverFatherName) {
+                document.getElementById('result').innerText = 'الرجاء إدخال جميع الأسماء';
+                return;
+            }
+
+            const userValue = calculateNameValue(userName) + calculateNameValue(userFatherName);
+            const loverValue = calculateNameValue(loverName) + calculateNameValue(loverFatherName);
+
+            const totalValue = userValue + loverValue;
+            const isPositive = totalValue % 7 === 0;
+
+            let resultMessage = مجموع قيم الأسماء هو: ${totalValue}\n;
+            resultMessage += isPositive
+                ? 'النتيجة إيجابية! هناك توافق جيد.'
+                : 'النتيجة سلبية. قد تكون هناك بعض التحديات.';
+
+            document.getElementById('result').innerText = resultMessage;
+        }
+    </script>
+
+</body>
+</html>
